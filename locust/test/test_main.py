@@ -447,7 +447,7 @@ class StandaloneIntegrationTests(ProcessIntegrationTest):
         port = get_free_tcp_port()
         with mock_locustfile() as mocked:
             with TestProcess(
-                f"locust -f {mocked.file_path} --web-port {port} --autostart", expect_return_code=None
+                f"locust -f {mocked.file_path} --web-port {port} --autostart", expect_return_code=None, join_timeout=5
             ) as tp:
                 tp.expect("Starting Locust")
 
@@ -470,7 +470,7 @@ class StandaloneIntegrationTests(ProcessIntegrationTest):
         port = get_free_tcp_port()
         with mock_locustfile() as mocked:
             with TestProcess(
-                f"locust -f {mocked.file_path} --web-port {port} -t 1 --autostart --autoquit 0", expect_return_code=None
+                f"locust -f {mocked.file_path} --web-port {port} -t 1 --autostart --autoquit 0", expect_return_code=None, join_timeout=5
             ) as tp:
                 tp.expect("Starting Locust")
                 tp.expect("Run time limit set to 1 seconds")
@@ -532,7 +532,7 @@ class StandaloneIntegrationTests(ProcessIntegrationTest):
             )
         ) as mocked:
             with TestProcess(
-                f"locust -f {mocked.file_path} --web-port {port} --autostart", expect_return_code=None
+                f"locust -f {mocked.file_path} --web-port {port} --autostart", expect_return_code=None, join_timeout=5
             ) as tp:
                 tp.expect("Starting Locust")
                 tp.expect("Starting web interface")
@@ -1526,7 +1526,7 @@ class AnyUser(HttpUser):
             with TestProcess(
                 f"locust -f {mocked.file_path} --master --headless --expect-workers 2",
                 sigint_on_exit=False,
-                expect_return_code=None,
+                expect_return_code=None, join_timeout=5,
             ) as tp_master:
                 with TestProcess(
                     f"locust -f {mocked.file_path} --worker --processes 2 --headless",
